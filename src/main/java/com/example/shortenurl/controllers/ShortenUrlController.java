@@ -4,6 +4,9 @@ import com.example.shortenurl.models.Url;
 import com.example.shortenurl.models.UrlResponse;
 import com.example.shortenurl.models.UrlStatsResponse;
 import com.example.shortenurl.services.ShortenUrlService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,9 +28,11 @@ public class ShortenUrlController {
     }
 
     @GetMapping("/{shortUrl}")
-    public String redirectToLongUrl(@PathVariable String shortUrl) {
+    public ResponseEntity<Void> redirectToLongUrl(@PathVariable String shortUrl) {
         UrlResponse urlResponse = shortenUrlService.retrieveLongUrl(shortUrl);
-        return "redirect:" + urlResponse.getUrl();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.LOCATION, urlResponse.getUrl());  // Add redirect URL to headers
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
     @PostMapping("/shorten/{shortUrl}")

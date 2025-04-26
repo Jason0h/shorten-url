@@ -1,8 +1,11 @@
 package com.example.shortenurl.models;
 
+import org.springframework.data.annotation.Id;
+
 import java.time.LocalDateTime;
 
 public class UrlResponse {
+    @Id
     private long id;
     private String url;
     private String shortcode;
