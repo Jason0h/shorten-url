@@ -1,7 +1,7 @@
 package com.example.shortenurl.services;
 
 import com.example.shortenurl.exceptions.LongUrlAlreadyExistsException;
-import com.example.shortenurl.exceptions.ShortUrlDoesNotExistException;
+import com.example.shortenurl.exceptions.ShortCodeDoesNotExistException;
 import com.example.shortenurl.exceptions.UrlIdDoesNotExistException;
 import com.example.shortenurl.helpers.SecureRandomStringGenerator;
 import com.example.shortenurl.models.UrlInfo;
@@ -21,7 +21,7 @@ public class ShortenUrlService {
         this.shortenUrlRepository = shortenUrlRepository;
     }
 
-    public UrlResponse createShortUrl(String longUrl) {
+    public UrlResponse createShortCode(String longUrl) {
         if (shortenUrlRepository.existsByUrl(longUrl)) throw new LongUrlAlreadyExistsException();
         String randomStr = SecureRandomStringGenerator.generateSecureAlphanumeric();
         while (shortenUrlRepository.existsByShortcode(randomStr)) {
@@ -37,18 +37,18 @@ public class ShortenUrlService {
                 .orElseThrow(UrlIdDoesNotExistException::new);
     }
 
-    public UrlResponse retrieveLongUrl(String shortUrl) {
-        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortUrl)
-                .orElseThrow(ShortUrlDoesNotExistException::new);
+    public UrlResponse retrieveLongUrl(String shortCode) {
+        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortCode)
+                .orElseThrow(ShortCodeDoesNotExistException::new);
         urlInfo.setAccessCount(urlInfo.getAccessCount() + 1);
         shortenUrlRepository.save(urlInfo);
         return shortenUrlRepository.findById(urlInfo.getId())
                 .orElseThrow(UrlIdDoesNotExistException::new);
     }
 
-    public UrlResponse updateShortUrl(String shortUrl, String longUrl) {
-        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortUrl)
-                .orElseThrow(ShortUrlDoesNotExistException::new);
+    public UrlResponse updateShortCode(String shortCode, String longUrl) {
+        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortCode)
+                .orElseThrow(ShortCodeDoesNotExistException::new);
         urlInfo.setUrl(longUrl);
         urlInfo.setUpdatedAt(LocalDateTime.now());
         shortenUrlRepository.save(urlInfo);
@@ -56,17 +56,17 @@ public class ShortenUrlService {
                 .orElseThrow(UrlIdDoesNotExistException::new);
     }
 
-    public void deleteShortUrl(String shortUrl) {
+    public void deleteShortCode(String shortCode) {
         try {
-            shortenUrlRepository.deleteByShortcode(shortUrl);
+            shortenUrlRepository.deleteByShortcode(shortCode);
         } catch (EmptyResultDataAccessException e) {
-            throw new ShortUrlDoesNotExistException();
+            throw new ShortCodeDoesNotExistException();
         }
     }
 
-    public UrlStatsResponse getShortUrlStats(String shortUrl) {
-        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortUrl)
-                .orElseThrow(ShortUrlDoesNotExistException::new);
+    public UrlStatsResponse getShortCodeStats(String shortCode) {
+        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortCode)
+                .orElseThrow(ShortCodeDoesNotExistException::new);
         urlInfo.setAccessCount(urlInfo.getAccessCount() + 1);
         shortenUrlRepository.save(urlInfo);
         return shortenUrlRepository.findById(urlInfo.getId())

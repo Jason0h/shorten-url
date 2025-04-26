@@ -18,35 +18,35 @@ public class ShortenUrlController {
     }
 
     @PostMapping("/shorten")
-    public UrlResponse createShortUrl(@RequestBody Url longUrl) {
-        return shortenUrlService.createShortUrl(longUrl.getUrl());
+    public UrlResponse createShortCode(@RequestBody Url longUrl) {
+        return shortenUrlService.createShortCode(longUrl.getUrl());
     }
 
-    @GetMapping("/shorten/{shortUrl}")
-    public UrlResponse retrieveLongUrl(@PathVariable String shortUrl) {
-        return shortenUrlService.retrieveLongUrl(shortUrl);
+    @GetMapping("/shorten/{shortCode}")
+    public UrlResponse retrieveLongUrl(@PathVariable String shortCode) {
+        return shortenUrlService.retrieveLongUrl(shortCode);
     }
 
-    @GetMapping("/{shortUrl}")
-    public ResponseEntity<Void> redirectToLongUrl(@PathVariable String shortUrl) {
-        UrlResponse urlResponse = shortenUrlService.retrieveLongUrl(shortUrl);
+    @GetMapping("/{shortCode}")
+    public ResponseEntity<Void> redirectToLongUrl(@PathVariable String shortCode) {
+        UrlResponse urlResponse = shortenUrlService.retrieveLongUrl(shortCode);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LOCATION, urlResponse.getUrl());  // Add redirect URL to headers
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-    @PostMapping("/shorten/{shortUrl}")
-    public UrlResponse updateShortUrl(@PathVariable String shortUrl, @RequestBody Url longUrl) {
-        return shortenUrlService.updateShortUrl(shortUrl, longUrl.getUrl());
+    @PostMapping("/shorten/{shortCode}")
+    public UrlResponse updateShortCode(@PathVariable String shortCode, @RequestBody Url longUrl) {
+        return shortenUrlService.updateShortCode(shortCode, longUrl.getUrl());
     }
 
-    @DeleteMapping("/shorten/{shortUrl}")
-    public void deleteShortUrl(@PathVariable String shortUrl) {
-        shortenUrlService.deleteShortUrl(shortUrl);
+    @DeleteMapping("/shorten/{shortCode}")
+    public void deleteShortCode(@PathVariable String shortCode) {
+        shortenUrlService.deleteShortCode(shortCode);
     }
 
-    @GetMapping("/shorten/{shortUrl}/stats")
-    public UrlStatsResponse getShortUrlStats(@PathVariable String shortUrl) {
-        return shortenUrlService.getShortUrlStats(shortUrl);
+    @GetMapping("/shorten/{shortCode}/stats")
+    public UrlStatsResponse getShortCodeStats(@PathVariable String shortCode) {
+        return shortenUrlService.getShortCodeStats(shortCode);
     }
 }
