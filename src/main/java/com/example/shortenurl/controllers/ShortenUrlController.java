@@ -36,8 +36,8 @@ public class ShortenUrlController {
     }
 
     @PostMapping("/shorten/{shortUrl}")
-    public UrlResponse updateShortUrl(@PathVariable String shortUrl) {
-        return shortenUrlService.updateShortUrl(shortUrl);
+    public UrlResponse updateShortUrl(@PathVariable String shortUrl, @RequestBody Url longUrl) {
+        return shortenUrlService.updateShortUrl(shortUrl, longUrl.getUrl());
     }
 
     @DeleteMapping("/shorten/{shortUrl}")

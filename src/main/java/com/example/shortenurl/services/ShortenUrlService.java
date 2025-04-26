@@ -8,6 +8,7 @@ import com.example.shortenurl.models.UrlInfo;
 import com.example.shortenurl.models.UrlResponse;
 import com.example.shortenurl.models.UrlStatsResponse;
 import com.example.shortenurl.repositories.ShortenUrlRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,21 +41,35 @@ public class ShortenUrlService {
         UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortUrl)
                 .orElseThrow(ShortUrlDoesNotExistException::new);
         urlInfo.setAccessCount(urlInfo.getAccessCount() + 1);
+        shortenUrlRepository.save(urlInfo);
+        return shortenUrlRepository.findById(urlInfo.getId())
+                .orElseThrow(UrlIdDoesNotExistException::new);
+    }
+
+    public UrlResponse updateShortUrl(String shortUrl, String longUrl) {
+        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortUrl)
+                .orElseThrow(ShortUrlDoesNotExistException::new);
+        urlInfo.setUrl(longUrl);
         urlInfo.setUpdatedAt(LocalDateTime.now());
         shortenUrlRepository.save(urlInfo);
         return shortenUrlRepository.findById(urlInfo.getId())
                 .orElseThrow(UrlIdDoesNotExistException::new);
     }
 
-    public UrlResponse updateShortUrl(String shortUrl) {
-        return new UrlResponse();
-    }
-
     public void deleteShortUrl(String shortUrl) {
-
+        try {
+            shortenUrlRepository.deleteByShortcode(shortUrl);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ShortUrlDoesNotExistException();
+        }
     }
 
     public UrlStatsResponse getShortUrlStats(String shortUrl) {
-        return new UrlStatsResponse();
+        UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortUrl)
+                .orElseThrow(ShortUrlDoesNotExistException::new);
+        urlInfo.setAccessCount(urlInfo.getAccessCount() + 1);
+        shortenUrlRepository.save(urlInfo);
+        return shortenUrlRepository.findById(urlInfo.getId())
+                .orElseThrow(UrlIdDoesNotExistException::new);
     }
 }
