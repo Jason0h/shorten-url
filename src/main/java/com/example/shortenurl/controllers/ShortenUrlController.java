@@ -31,7 +31,7 @@ public class ShortenUrlController {
     public ResponseEntity<Void> redirectToLongUrl(@PathVariable String shortCode) {
         UrlResponse urlResponse = shortenUrlService.retrieveLongUrl(shortCode);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.LOCATION, urlResponse.getUrl());  // Add redirect URL to headers
+        headers.add(HttpHeaders.LOCATION, urlResponse.getUrl());
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 

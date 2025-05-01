@@ -1,8 +1,10 @@
 package com.example.shortenurl.services;
 
 import com.example.shortenurl.exceptions.LongUrlAlreadyExistsException;
+import com.example.shortenurl.exceptions.LongUrlIsNotValidException;
 import com.example.shortenurl.exceptions.ShortCodeDoesNotExistException;
 import com.example.shortenurl.exceptions.UrlIdDoesNotExistException;
+import com.example.shortenurl.helpers.LongUrlValidator;
 import com.example.shortenurl.helpers.SecureRandomStringGenerator;
 import com.example.shortenurl.models.UrlInfo;
 import com.example.shortenurl.models.UrlResponse;
@@ -23,6 +25,7 @@ public class ShortenUrlService {
 
     public UrlResponse createShortCode(String longUrl) {
         if (shortenUrlRepository.existsByUrl(longUrl)) throw new LongUrlAlreadyExistsException();
+        if (!LongUrlValidator.isValid(longUrl)) throw new LongUrlIsNotValidException();
         String randomStr = SecureRandomStringGenerator.generateSecureAlphanumeric();
         while (shortenUrlRepository.existsByShortcode(randomStr)) {
             randomStr = SecureRandomStringGenerator.generateSecureAlphanumeric();
@@ -47,6 +50,7 @@ public class ShortenUrlService {
     }
 
     public UrlResponse updateShortCode(String shortCode, String longUrl) {
+        if (!LongUrlValidator.isValid(longUrl)) throw new LongUrlIsNotValidException();
         UrlInfo urlInfo = shortenUrlRepository.findByShortcode(shortCode)
                 .orElseThrow(ShortCodeDoesNotExistException::new);
         urlInfo.setUrl(longUrl);
