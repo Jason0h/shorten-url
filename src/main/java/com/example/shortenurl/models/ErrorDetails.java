@@ -5,6 +5,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Url {
-    private String url;
+public class ErrorDetails {
+    private String message;
 }
