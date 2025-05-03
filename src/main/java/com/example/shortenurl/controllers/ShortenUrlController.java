@@ -18,6 +18,11 @@ public class ShortenUrlController {
         this.shortenUrlService = shortenUrlService;
     }
 
+    @GetMapping("/health")
+    public void healthCheck() {
+        // for compatibility with AWS App Runner
+    }
+
     @PostMapping("/shorten")
     public UrlResponse createShortCode(@RequestBody Url longUrl) {
         return shortenUrlService.createShortCode(longUrl.getUrl());
