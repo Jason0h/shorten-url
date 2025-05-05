@@ -1,5 +1,5 @@
 Build the docker image from root via the following command:
-docker build -f prod/Dockerfile .
+docker build -f docker/prod/Dockerfile .
 
 When running a new container:
 map host-port:docker-port as 8080:8080
