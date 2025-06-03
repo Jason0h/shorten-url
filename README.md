@@ -8,7 +8,7 @@ The **shorten-url** development project is built using the Java Spring Boot fram
 The **shorten-url** project in production is run fully managed by AWS App Runner via a Docker image of the **shorten-url** project that has been uploaded to AWS ECR. The production version of **shorten-url** also persists its data in a managed instance of AWS RDS for MySQL
 
 ## Accessing the Production Project Service
-For a teaser of the service, visit the following "shortened" url  
+For a teaser of the service, visit the following "shortened" url, which redirects to a google query for "dogs"
 --> https://tu7uf3drug.us-east-2.awsapprunner.com/1cpf0c
 
 Access the Postman collection for the API via [https://documenter.getpostman.com/view/shorten-url](https://documenter.getpostman.com/view/44168162/2sB2j68q3V#562662ea-c24c-4969-be0e-e3cfeffebc7f).  
