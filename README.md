@@ -10,7 +10,7 @@ The **shorten-url** project in production is run fully managed by AWS App Runner
 You can read my brief reflections on [https://dev.to/jason_oh/url-shortening-service-reflections](https://dev.to/jason_oh_242b4e371630fdac/url-shortening-service-reflections-44fj)
 
 ## Accessing the Production Project Service
-For a teaser of the service, visit the following "shortened" url, which redirects to a google query for "dogs"
+For a teaser of the service, visit the following "shortened" url, which redirects to a google query for "dogs"  
 --> https://tu7uf3drug.us-east-2.awsapprunner.com/1cpf0c
 
 Access the Postman collection for the API via [https://documenter.getpostman.com/view/shorten-url](https://documenter.getpostman.com/view/44168162/2sB2j68q3V#562662ea-c24c-4969-be0e-e3cfeffebc7f).  
